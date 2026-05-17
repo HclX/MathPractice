@@ -11,11 +11,11 @@ class MathApp {
         this.PET_STORAGE_KEY = 'math_selected_pet';
         
         this.PETS = {
-            unicorn: { name: "Sparkles the Unicorn", avatar: "🦄", food: "🧁", happy: "✨", sad: "💧", chew: "😋", actionName: "Sparkles" },
-            kitten: { name: "Whiskers the Kitten", avatar: "🐱", food: "🐟", happy: "💖", sad: "😿", chew: "👅", actionName: "Whiskers" },
-            puppy: { name: "Barnaby the Puppy", avatar: "🐶", food: "🥩", happy: "💖", sad: "🥺", chew: "🦴", actionName: "Barnaby" },
-            bunny: { name: "Clover the Bunny", avatar: "🐰", food: "🥕", happy: "💖", sad: "💧", chew: "😋", actionName: "Clover" },
-            panda: { name: "Pip the Panda", avatar: "🐼", food: "🍪", happy: "💖", sad: "🥺", chew: "😋", actionName: "Pip" }
+            unicorn: { name: "Sparkles the Unicorn", avatar: "🦄", food: "🧁", flyingFood: ["🧁"], happy: "✨", sad: "💧", chew: "😋", actionName: "Sparkles" },
+            kitten: { name: "Whiskers the Kitten", avatar: "🐱", food: "🍓 & 🐟", flyingFood: ["🍓", "🐟", "🫐"], happy: "💖", sad: "😿", chew: "👅", actionName: "Whiskers" },
+            puppy: { name: "Barnaby the Puppy", avatar: "🐶", food: "🥩", flyingFood: ["🥩", "🦴"], happy: "💖", sad: "🥺", chew: "🦴", actionName: "Barnaby" },
+            bunny: { name: "Clover the Bunny", avatar: "🐰", food: "🥕", flyingFood: ["🥕"], happy: "💖", sad: "💧", chew: "😋", actionName: "Clover" },
+            panda: { name: "Pip the Panda", avatar: "🐼", food: "🍪", flyingFood: ["🍪", "🎋"], happy: "💖", sad: "🥺", chew: "😋", actionName: "Pip" }
         };
 
         let savedPet = localStorage.getItem(this.PET_STORAGE_KEY);
@@ -279,13 +279,17 @@ class MathApp {
             this.playChime(true);
             this.triggerConfetti();
             
+            const flyingIcon = (pet.flyingFood && pet.flyingFood.length > 0) 
+                ? pet.flyingFood[Math.floor(Math.random() * pet.flyingFood.length)] 
+                : pet.food;
+
             // Trigger Flying Food Animation
-            this.animateFlyingFood();
+            this.animateFlyingFood(flyingIcon);
 
             const praises = [
-                `🎉 Wow! ${pet.actionName} loves the ${pet.food}! ⭐`,
+                `🎉 Wow! ${pet.actionName} loves the ${flyingIcon}! ⭐`,
                 `✨ Amazing! ${pet.actionName} is so happy! 💖`,
-                `🦄 Brilliant! That ${pet.food} looks delicious! 🌸`,
+                `🦄 Brilliant! That ${flyingIcon} looks delicious! 🌸`,
                 `🌟 Incredible job! ${pet.actionName} is doing a happy dance! 🎈`
             ];
             const randomPraise = praises[Math.floor(Math.random() * praises.length)];
@@ -330,7 +334,7 @@ class MathApp {
     /**
      * Animate Food Flying from Input to Pet Avatar Mouth
      */
-    animateFlyingFood() {
+    animateFlyingFood(flyingIcon) {
         const pet = this.PETS[this.selectedPet];
         const startRect = this.answerInput.getBoundingClientRect();
         const avatarEl = document.getElementById('pet-avatar');
@@ -338,7 +342,7 @@ class MathApp {
 
         const foodEl = document.createElement('div');
         foodEl.className = 'flying-food';
-        foodEl.textContent = pet.food;
+        foodEl.textContent = flyingIcon || pet.food;
         foodEl.style.left = `${startRect.left + startRect.width / 2 - 30}px`;
         foodEl.style.top = `${startRect.top + startRect.height / 2 - 30}px`;
         
@@ -355,7 +359,7 @@ class MathApp {
         // Pet reaction
         avatarEl.className = 'pet-avatar pet-happy';
         document.getElementById('pet-mood-bubble').textContent = '💖';
-        document.getElementById('pet-instruction').textContent = `${pet.actionName} happily munches on the ${pet.food}! Yum! 😋`;
+        document.getElementById('pet-instruction').textContent = `${pet.actionName} happily munches on the ${flyingIcon || pet.food}! Yum! 😋`;
 
         setTimeout(() => {
             if (foodEl.parentNode) {
