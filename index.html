@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Magical Math Practice 🌟</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background floating elements -->
+    <div class="bg-bubbles">
+        <div class="bubble">🌟</div>
+        <div class="bubble">🦄</div>
+        <div class="bubble">💖</div>
+        <div class="bubble">🌸</div>
+        <div class="bubble">✨</div>
+        <div class="bubble">🎈</div>
+        <div class="bubble">👑</div>
+        <div class="bubble">🦋</div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="app-container">
+        <header class="app-header">
+            <h1>✨ Magical Math Adventure ✨</h1>
+            <nav class="nav-tabs">
+                <button id="tab-practice" class="tab-btn active" onclick="app.switchTab('practice')">
+                    🦄 Today's Challenge
+                </button>
+                <button id="tab-summary" class="tab-btn" onclick="app.switchTab('summary')">
+                    🏆 My Trophy Room
+                </button>
+            </nav>
+        </header>
+
+        <main class="app-content">
+            <!-- PRACTICE VIEW -->
+            <section id="view-practice" class="view-section active">
+                <div class="daily-status-header">
+                    <div class="date-badge" id="current-date-display">📅 Today</div>
+                    <div class="progress-wrapper">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="practice-progress"></div>
+                        </div>
+                        <span class="progress-text" id="practice-progress-text">0 / 10</span>
+                    </div>
+                </div>
+
+                <!-- Question Container -->
+                <div id="question-area" class="question-card">
+                    <div class="question-header">
+                        <span class="question-number" id="question-number-badge">Question 1</span>
+                        <span class="stars-earned" id="stars-earned-display">⭐ 0</span>
+                    </div>
+
+                    <div class="math-problem">
+                        <span id="num1" class="math-number">00</span>
+                        <span class="math-operator">×</span>
+                        <span id="num2" class="math-number">00</span>
+                        <span class="math-equals">=</span>
+                        <input type="number" id="answer-input" class="answer-input" placeholder="?" inputmode="numeric" autofocus>
+                    </div>
+
+                    <div class="feedback-area" id="feedback-message">
+                        <!-- Feedback text appears here -->
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="check-btn" class="action-btn primary-btn" onclick="app.checkAnswer()">
+                            ✨ Check Answer ✨
+                        </button>
+                        <button id="next-btn" class="action-btn secondary-btn hidden" onclick="app.nextQuestion()">
+                            Next Question ➡️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Day Complete Container -->
+                <div id="day-complete-area" class="completion-card hidden">
+                    <h2>🎉 Hooray! Challenge Completed! 🎉</h2>
+                    <div class="trophy-display">👑</div>
+                    <p class="completion-message">You did a brilliant job practicing your multiplication today!</p>
+                    <div class="completion-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Success Rate</span>
+                            <span class="stat-value" id="today-success-rate">100%</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Stars Earned</span>
+                            <span class="stat-value" id="today-stars-earned">10 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="action-btn primary-btn" onclick="app.switchTab('summary')">
+                        View Trophy Room 🏆
+                    </button>
+                </div>
+            </section>
+
+            <!-- SUMMARY / HISTORY VIEW -->
+            <section id="view-summary" class="view-section hidden">
+                <div class="summary-header">
+                    <h2>🏆 Your Magical Trophy Room 🏆</h2>
+                    <p>Here is your past practice history and all the amazing badges you have collected!</p>
+                    
+                    <div class="lifetime-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-info">
+                                <span class="stat-num" id="total-days-practiced">0</span>
+                                <span class="stat-name">Days Practiced</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-info">
+                                <span class="stat-num" id="total-stars-collected">0</span>
+                                <span class="stat-name">Total Stars</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-info">
+                                <span class="stat-num" id="average-success-rate">0%</span>
+                                <span class="stat-name">Avg Success Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Questions</th>
+                                <th>Success Rate</th>
+                                <th>Trophy / Badge</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- History rows dynamically populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
