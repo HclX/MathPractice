@@ -199,6 +199,10 @@ class MathApp {
      * Render practice view
      */
     render() {
+        if (this.nextTimer) {
+            clearTimeout(this.nextTimer);
+            this.nextTimer = null;
+        }
         this.renderPetArea();
         document.getElementById('current-date-display').textContent = `📅 ${this.formatDate(this.todayStr)}`;
         
@@ -299,6 +303,11 @@ class MathApp {
             
             // Update sidebar stats immediately
             document.getElementById('sidebar-stars').textContent = `${this.state.stars} ⭐`;
+
+            // Auto-advance to next question after 2.2 seconds
+            this.nextTimer = setTimeout(() => {
+                this.nextQuestion();
+            }, 2200);
         } else {
             // Incorrect Answer
             this.playChime(false);
@@ -372,6 +381,10 @@ class MathApp {
      * Advance to next question
      */
     nextQuestion() {
+        if (this.nextTimer) {
+            clearTimeout(this.nextTimer);
+            this.nextTimer = null;
+        }
         this.state.currentIndex++;
         if (this.state.currentIndex >= this.TOTAL_QUESTIONS) {
             this.finishDailyChallenge();
