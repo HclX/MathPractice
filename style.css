@@ -795,6 +795,19 @@ body {
     color: var(--color-text-main);
 }
 
+.completion-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.completion-buttons .action-btn {
+    min-width: 220px;
+}
+
 /* Summary View */
 .summary-header {
     text-align: center;

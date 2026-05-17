@@ -445,6 +445,27 @@ class MathApp {
     }
 
     /**
+     * Restart today's challenge with a brand new set of questions
+     */
+    restartDailyChallenge() {
+        const questions = this.generateDailyQuestions();
+        this.state = {
+            date: this.todayStr,
+            questions: questions,
+            currentIndex: 0,
+            completed: false,
+            stars: 0,
+            successRate: 0
+        };
+        this.saveState();
+        this.render();
+        if (this.answerInput) {
+            this.answerInput.focus();
+        }
+        this.showFeedback("✨ Challenge restarted! Let's feed your pet again! ✨", "success");
+    }
+
+    /**
      * Save today's results to history
      */
     saveToHistory() {
