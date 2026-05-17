@@ -27,12 +27,15 @@ A delightful, premium, single-page web application designed specifically for an 
 - **Correct Answers**: Triggers a beautiful burst of star and circle confetti, synthesizes a magical audio chime, awards a golden star, and displays cheerful praise.
 - **Supportive Encouragement**: Incorrect attempts produce a gentle audio boop and supportive messages, encouraging her to try again without giving away the answer.
 
-### 🏆 My Trophy Room (Summary Dashboard)
-- **Lifetime Statistics**: Tracks total days practiced, total stars collected, and average lifetime success rate.
-- **Visual Badges**: Earn cute medals based on daily performance:
+### 🏡 My Pet Room & Trophy Shelf
+- **Cozy Pet Living Area**: View your selected pet resting happily on their magic rug in their cozy room!
+- **Grand Trophy Display Shelf**: Every completed daily challenge adds a permanent trophy to your pet's collection, complete with date badges and earned stars.
+- **Starter History Seed**: Automatically populates starter practice records on your very first visit so your pet's room and trophy shelf look beautifully decorated right away.
+- **Detailed Adventure Log**: Tabular record tracking past dates, question counts, success rates, and visual medal badges:
   - 🥇 **Gold Trophy 👑** (100% Success)
   - 🥈 **Silver Star ⭐** (80%–99% Success)
   - 🥉 **Bronze Medal** (<80% Success)
+- **🔄 Restart Challenge Button**: Finished today's practice but want to play again? Use the Restart Challenge button to generate a fresh set of questions anytime!
 
 ### 💖 Magical Aesthetics
 - **Vibrant & Kid-Friendly**: Pastel pink, purple, and mint gradient styling with floating background emojis (🦄, 🌟, 💖, 🌸, 🎈).
