@@ -1,5 +1,5 @@
 /**
- * Magical Math Practice App
+ * Magical Math Practice App with Pet Feeding Gamification
  * Designed for an 8-year-old girl to practice 2-digit multiplications.
  */
 
@@ -8,7 +8,17 @@ class MathApp {
         this.TOTAL_QUESTIONS = 10;
         this.STORAGE_KEY_PREFIX = 'math_practice_';
         this.HISTORY_KEY = 'math_practice_history';
+        this.PET_STORAGE_KEY = 'math_selected_pet';
         
+        this.PETS = {
+            unicorn: { name: "Sparkles the Unicorn", avatar: "🦄", food: "🧁", happy: "✨", sad: "💧", chew: "😋", actionName: "Sparkles" },
+            kitten: { name: "Whiskers the Kitten", avatar: "🐱", food: "🐟", happy: "💖", sad: "😿", chew: "👅", actionName: "Whiskers" },
+            puppy: { name: "Barnaby the Puppy", avatar: "🐶", food: "🥩", happy: "💖", sad: "🥺", chew: "🦴", actionName: "Barnaby" },
+            bunny: { name: "Clover the Bunny", avatar: "🐰", food: "🥕", happy: "💖", sad: "💧", chew: "😋", actionName: "Clover" },
+            panda: { name: "Pip the Panda", avatar: "🐼", food: "🍪", happy: "💖", sad: "🥺", chew: "😋", actionName: "Pip" }
+        };
+
+        this.selectedPet = localStorage.getItem(this.PET_STORAGE_KEY) || 'unicorn';
         this.todayStr = this.getTodayDateString();
         this.state = this.loadTodayState();
         
@@ -67,48 +77,29 @@ class MathApp {
 
     /**
      * Generate 10 tailored 2-digit by 2-digit multiplication questions
-     * Mixes difficulty to keep it fun and not overwhelming for an 8-year-old.
      */
     generateDailyQuestions() {
         const questions = [];
-        
-        // Helper to get random int between min and max (inclusive)
         const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
         for (let i = 0; i < this.TOTAL_QUESTIONS; i++) {
             let num1, num2;
-            
             if (i < 2) {
-                // Easy tier: 10-15 by 10-15
-                num1 = rand(10, 15);
-                num2 = rand(10, 15);
+                num1 = rand(10, 15); num2 = rand(10, 15);
             } else if (i < 5) {
-                // Multiples of 10 tier: e.g. 20, 30, 40 by 11-25
-                num1 = rand(2, 5) * 10;
-                num2 = rand(11, 25);
+                num1 = rand(2, 5) * 10; num2 = rand(11, 25);
             } else if (i < 8) {
-                // Medium tier: 12-25 by 12-25
-                num1 = rand(12, 25);
-                num2 = rand(12, 25);
+                num1 = rand(12, 25); num2 = rand(12, 25);
             } else {
-                // Challenge tier: 25-45 by 25-45
-                num1 = rand(25, 45);
-                num2 = rand(25, 45);
+                num1 = rand(25, 45); num2 = rand(25, 45);
             }
 
-            // Randomly swap order so larger number isn't always second
             if (Math.random() > 0.5) {
-                const temp = num1;
-                num1 = num2;
-                num2 = temp;
+                const temp = num1; num1 = num2; num2 = temp;
             }
 
             questions.push({
-                num1: num1,
-                num2: num2,
-                answer: num1 * num2,
-                correct: null, // null = unanswered, true = correct, false = attempted incorrect
-                attempts: 0
+                num1: num1, num2: num2, answer: num1 * num2, correct: null, attempts: 0
             });
         }
         return questions;
@@ -122,8 +113,8 @@ class MathApp {
         this.checkBtn = document.getElementById('check-btn');
         this.nextBtn = document.getElementById('next-btn');
         this.feedbackMsg = document.getElementById('feedback-message');
+        this.petModal = document.getElementById('pet-selector-modal');
         
-        // Handle Enter key press in input
         this.answerInput.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
                 if (!this.checkBtn.classList.contains('hidden')) {
@@ -133,6 +124,44 @@ class MathApp {
                 }
             }
         });
+    }
+
+    /**
+     * Open & Close Pet Selector Modal
+     */
+    openPetSelector() {
+        this.petModal.classList.remove('hidden');
+    }
+
+    closePetSelector() {
+        this.petModal.classList.add('hidden');
+        if (this.answerInput && !this.state.completed) {
+            this.answerInput.focus();
+        }
+    }
+
+    selectPet(petId) {
+        if (this.PETS[petId]) {
+            this.selectedPet = petId;
+            localStorage.setItem(this.PET_STORAGE_KEY, petId);
+            this.renderPetArea();
+            this.closePetSelector();
+        }
+    }
+
+    /**
+     * Render Pet display arena
+     */
+    renderPetArea() {
+        const pet = this.PETS[this.selectedPet];
+        document.getElementById('pet-name-display').textContent = pet.name;
+        
+        const avatarEl = document.getElementById('pet-avatar');
+        avatarEl.textContent = pet.avatar;
+        avatarEl.className = 'pet-avatar'; // reset state
+        
+        document.getElementById('pet-mood-bubble').textContent = pet.happy;
+        document.getElementById('pet-instruction').textContent = `Answer correctly to feed ${pet.actionName} a ${pet.food}!`;
     }
 
     /**
@@ -159,10 +188,10 @@ class MathApp {
     }
 
     /**
-     * Render the practice view based on current state
+     * Render practice view
      */
     render() {
-        // Update Header status
+        this.renderPetArea();
         document.getElementById('current-date-display').textContent = `📅 ${this.formatDate(this.todayStr)}`;
         
         const progressPct = (this.state.currentIndex / this.TOTAL_QUESTIONS) * 100;
@@ -183,7 +212,6 @@ class MathApp {
         questionArea.classList.remove('hidden');
         dayCompleteArea.classList.add('hidden');
 
-        // Current question
         const q = this.state.questions[this.state.currentIndex];
         document.getElementById('question-number-badge').textContent = `Question ${this.state.currentIndex + 1} of ${this.TOTAL_QUESTIONS}`;
         document.getElementById('stars-earned-display').textContent = `⭐ ${this.state.stars}`;
@@ -203,7 +231,7 @@ class MathApp {
     }
 
     /**
-     * Check the user's answer
+     * Check answer and trigger pet feeding / reactions
      */
     checkAnswer() {
         const userAnswer = parseInt(this.answerInput.value, 10);
@@ -213,6 +241,7 @@ class MathApp {
         }
 
         const q = this.state.questions[this.state.currentIndex];
+        const pet = this.PETS[this.selectedPet];
         q.attempts++;
 
         if (userAnswer === q.answer) {
@@ -230,11 +259,14 @@ class MathApp {
             this.playChime(true);
             this.triggerConfetti();
             
+            // Trigger Flying Food Animation
+            this.animateFlyingFood();
+
             const praises = [
-                "🎉 Wow! You are a math superstar! ⭐",
-                "✨ Amazing job! That is absolutely correct! 💖",
-                "🦄 Brilliant! You nailed it! 🌸",
-                "🌟 Incredible! Keep up the magical work! 🎈"
+                `🎉 Wow! ${pet.actionName} loves the ${pet.food}! ⭐`,
+                `✨ Amazing! ${pet.actionName} is so happy! 💖`,
+                `🦄 Brilliant! That ${pet.food} looks delicious! 🌸`,
+                `🌟 Incredible job! ${pet.actionName} is doing a happy dance! 🎈`
             ];
             const randomPraise = praises[Math.floor(Math.random() * praises.length)];
             this.showFeedback(randomPraise, "success");
@@ -243,10 +275,25 @@ class MathApp {
         } else {
             // Incorrect Answer
             this.playChime(false);
+            
+            // Pet gets sad
+            const avatarEl = document.getElementById('pet-avatar');
+            avatarEl.className = 'pet-avatar pet-sad';
+            document.getElementById('pet-mood-bubble').textContent = pet.sad;
+            document.getElementById('pet-instruction').textContent = `Oh no, ${pet.actionName} is still hungry! Let's try again!`;
+            
+            setTimeout(() => {
+                if (avatarEl.classList.contains('pet-sad')) {
+                    avatarEl.className = 'pet-avatar';
+                    document.getElementById('pet-mood-bubble').textContent = pet.happy;
+                    document.getElementById('pet-instruction').textContent = `Answer correctly to feed ${pet.actionName} a ${pet.food}!`;
+                }
+            }, 1500);
+
             const encouragements = [
-                "💡 Oops! Not quite, but you are so close! Try again! ✨",
-                "💖 Good try! Let's double check our calculation! 🌸",
-                "🦄 Almost there! You can do this! 💪"
+                `💡 Oops! Not quite, but ${pet.actionName} knows you can do it! Try again! ✨`,
+                `💖 Good try! Let's double check our calculation for ${pet.actionName}! 🌸`,
+                `🦄 Almost there! You can do this! 💪`
             ];
             const randomEncouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
             this.showFeedback(randomEncouragement, "error");
@@ -258,11 +305,47 @@ class MathApp {
     }
 
     /**
-     * Advance to the next question or finish the challenge
+     * Animate Food Flying from Input to Pet Avatar Mouth
+     */
+    animateFlyingFood() {
+        const pet = this.PETS[this.selectedPet];
+        const startRect = this.answerInput.getBoundingClientRect();
+        const avatarEl = document.getElementById('pet-avatar');
+        const endRect = avatarEl.getBoundingClientRect();
+
+        const foodEl = document.createElement('div');
+        foodEl.className = 'flying-food';
+        foodEl.textContent = pet.food;
+        foodEl.style.left = `${startRect.left + startRect.width / 2 - 30}px`;
+        foodEl.style.top = `${startRect.top + startRect.height / 2 - 30}px`;
+        
+        document.body.appendChild(foodEl);
+
+        // Force reflow
+        foodEl.getBoundingClientRect();
+
+        // Animate to mouth
+        foodEl.style.left = `${endRect.left + endRect.width / 2 - 20}px`;
+        foodEl.style.top = `${endRect.top + endRect.height / 2 - 20}px`;
+        foodEl.style.transform = 'scale(0.4)';
+
+        // Pet reaction
+        avatarEl.className = 'pet-avatar pet-happy';
+        document.getElementById('pet-mood-bubble').textContent = '💖';
+        document.getElementById('pet-instruction').textContent = `${pet.actionName} happily munches on the ${pet.food}! Yum! 😋`;
+
+        setTimeout(() => {
+            if (foodEl.parentNode) {
+                foodEl.parentNode.removeChild(foodEl);
+            }
+        }, 800);
+    }
+
+    /**
+     * Advance to next question
      */
     nextQuestion() {
         this.state.currentIndex++;
-        
         if (this.state.currentIndex >= this.TOTAL_QUESTIONS) {
             this.finishDailyChallenge();
         } else {
@@ -272,73 +355,50 @@ class MathApp {
     }
 
     /**
-     * Finish today's challenge, calculate success rate and save to history
+     * Finish today's challenge
      */
     finishDailyChallenge() {
         this.state.completed = true;
-        
-        // Calculate success rate based on first-attempt correct answers
         let firstAttemptCorrect = 0;
         this.state.questions.forEach(q => {
             if (q.correct && q.attempts === 1) {
                 firstAttemptCorrect++;
             }
         });
-        
         this.state.successRate = Math.round((firstAttemptCorrect / this.TOTAL_QUESTIONS) * 100);
         this.saveState();
-        
-        // Add to History
         this.saveToHistory();
-        
         this.render();
         this.triggerConfetti(true);
     }
 
     /**
-     * Save today's results to history in localStorage
+     * Save today's results to history
      */
     saveToHistory() {
         let history = [];
         const savedHistory = localStorage.getItem(this.HISTORY_KEY);
         if (savedHistory) {
-            try {
-                history = JSON.parse(savedHistory);
-            } catch (e) {
-                console.error("Error parsing history", e);
-            }
+            try { history = JSON.parse(savedHistory); } catch (e) { console.error(e); }
         }
-
-        // Remove existing record for today if any (to overwrite)
         history = history.filter(item => item.date !== this.todayStr);
-
         history.push({
-            date: this.todayStr,
-            totalQuestions: this.TOTAL_QUESTIONS,
-            stars: this.state.stars,
-            successRate: this.state.successRate
+            date: this.todayStr, totalQuestions: this.TOTAL_QUESTIONS, stars: this.state.stars, successRate: this.state.successRate
         });
-
-        // Sort history descending by date
         history.sort((a, b) => b.date.localeCompare(a.date));
         localStorage.setItem(this.HISTORY_KEY, JSON.stringify(history));
     }
 
     /**
-     * Render Summary / Trophy Room view
+     * Render Trophy Room summary
      */
     renderSummary() {
         let history = [];
         const savedHistory = localStorage.getItem(this.HISTORY_KEY);
         if (savedHistory) {
-            try {
-                history = JSON.parse(savedHistory);
-            } catch (e) {
-                console.error("Error parsing history", e);
-            }
+            try { history = JSON.parse(savedHistory); } catch (e) { console.error(e); }
         }
 
-        // Calculate lifetime stats
         const totalDays = history.length;
         const totalStars = history.reduce((sum, item) => sum + (item.stars || 0), 0);
         const avgSuccess = totalDays > 0 
@@ -361,13 +421,9 @@ class MathApp {
 
         history.forEach(item => {
             const tr = document.createElement('tr');
-            
             let badge = "🥉 Bronze Medal";
-            if (item.successRate === 100) {
-                badge = "🥇 Gold Trophy 👑";
-            } else if (item.successRate >= 80) {
-                badge = "🥈 Silver Star ⭐";
-            }
+            if (item.successRate === 100) badge = "🥇 Gold Trophy 👑";
+            else if (item.successRate >= 80) badge = "🥈 Silver Star ⭐";
 
             tr.innerHTML = `
                 <td>${this.formatDate(item.date)}</td>
@@ -379,17 +435,11 @@ class MathApp {
         });
     }
 
-    /**
-     * Show feedback message with specific style class
-     */
     showFeedback(msg, type) {
         this.feedbackMsg.className = `feedback-area ${type}`;
         this.feedbackMsg.textContent = msg;
     }
 
-    /**
-     * Helper to format date YYYY-MM-DD to readable string
-     */
     formatDate(dateStr) {
         const parts = dateStr.split('-');
         if (parts.length !== 3) return dateStr;
@@ -397,152 +447,83 @@ class MathApp {
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
-    /**
-     * Play magical sound effects using Web Audio API (100% offline)
-     */
     playChime(isCorrect) {
         try {
-            if (!this.audioCtx) {
-                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
+            if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const now = this.audioCtx.currentTime;
             const osc = this.audioCtx.createOscillator();
             const gain = this.audioCtx.createGain();
-            
-            osc.connect(gain);
-            gain.connect(this.audioCtx.destination);
+            osc.connect(gain); gain.connect(this.audioCtx.destination);
 
             if (isCorrect) {
-                // Magical Arpeggio
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, now); // C5
-                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-                osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
-                
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-                osc.start(now);
-                osc.stop(now + 0.6);
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
+                osc.frequency.setValueAtTime(1046.50, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                osc.start(now); osc.stop(now + 0.6);
             } else {
-                // Gentle boop
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(300, now);
-                osc.frequency.setValueAtTime(200, now + 0.15);
-                
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.3);
+                osc.frequency.setValueAtTime(300, now); osc.frequency.setValueAtTime(200, now + 0.15);
+                gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
             }
-        } catch (e) {
-            console.log("Web Audio API not supported or blocked", e);
-        }
+        } catch (e) { console.log(e); }
     }
 
-    /**
-     * Confetti Canvas Animation Setup
-     */
     initConfettiCanvas() {
         this.canvas = document.getElementById('confetti-canvas');
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.animating = false;
-
-        const resize = () => {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        };
-        window.addEventListener('resize', resize);
-        resize();
+        const resize = () => { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; };
+        window.addEventListener('resize', resize); resize();
     }
 
-    /**
-     * Trigger Confetti burst
-     */
     triggerConfetti(isGrand = false) {
         const count = isGrand ? 150 : 60;
         const colors = ['#ff758c', '#ff7eb3', '#6ee7b7', '#3b82f6', '#f59e0b', '#9333ea', '#ec4899'];
-        
         for (let i = 0; i < count; i++) {
             this.particles.push({
-                x: window.innerWidth / 2,
-                y: window.innerHeight * 0.8,
-                vx: (Math.random() - 0.5) * (isGrand ? 25 : 15),
-                vy: (Math.random() - 1) * (isGrand ? 25 : 18),
-                size: Math.random() * 8 + 6,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                rot: Math.random() * Math.PI * 2,
-                rotSpeed: (Math.random() - 0.5) * 0.2,
-                shape: Math.random() > 0.3 ? 'circle' : 'star',
-                alpha: 1
+                x: window.innerWidth / 2, y: window.innerHeight * 0.8,
+                vx: (Math.random() - 0.5) * (isGrand ? 25 : 15), vy: (Math.random() - 1) * (isGrand ? 25 : 18),
+                size: Math.random() * 8 + 6, color: colors[Math.floor(Math.random() * colors.length)],
+                rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.2,
+                shape: Math.random() > 0.3 ? 'circle' : 'star', alpha: 1
             });
         }
-
-        if (!this.animating) {
-            this.animating = true;
-            this.animateConfetti();
-        }
+        if (!this.animating) { this.animating = true; this.animateConfetti(); }
     }
 
-    /**
-     * Confetti Animation Loop
-     */
     animateConfetti() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        let activeParticles = 0;
-        const gravity = 0.4;
-        const drag = 0.98;
+        let activeParticles = 0; const gravity = 0.4; const drag = 0.98;
 
         for (let i = 0; i < this.particles.length; i++) {
             const p = this.particles[i];
             if (p.alpha <= 0) continue;
-            
-            activeParticles++;
-            p.vx *= drag;
-            p.vy += gravity;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.rot += p.rotSpeed;
-            p.alpha -= 0.008;
+            activeParticles++; p.vx *= drag; p.vy += gravity; p.x += p.vx; p.y += p.vy; p.rot += p.rotSpeed; p.alpha -= 0.008;
 
-            this.ctx.save();
-            this.ctx.translate(p.x, p.y);
-            this.ctx.rotate(p.rot);
-            this.ctx.globalAlpha = Math.max(0, p.alpha);
-            this.ctx.fillStyle = p.color;
+            this.ctx.save(); this.ctx.translate(p.x, p.y); this.ctx.rotate(p.rot);
+            this.ctx.globalAlpha = Math.max(0, p.alpha); this.ctx.fillStyle = p.color;
 
             if (p.shape === 'circle') {
-                this.ctx.beginPath();
-                this.ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
-                this.ctx.fill();
+                this.ctx.beginPath(); this.ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2); this.ctx.fill();
             } else {
-                // Draw Star
                 this.ctx.beginPath();
                 for (let j = 0; j < 5; j++) {
                     this.ctx.lineTo(Math.cos((18 + j * 72) * Math.PI / 180) * p.size, -Math.sin((18 + j * 72) * Math.PI / 180) * p.size);
                     this.ctx.lineTo(Math.cos((54 + j * 72) * Math.PI / 180) * (p.size / 2), -Math.sin((54 + j * 72) * Math.PI / 180) * (p.size / 2));
                 }
-                this.ctx.closePath();
-                this.ctx.fill();
+                this.ctx.closePath(); this.ctx.fill();
             }
             this.ctx.restore();
         }
-
-        if (activeParticles > 0) {
-            requestAnimationFrame(() => this.animateConfetti());
-        } else {
-            this.particles = [];
-            this.animating = false;
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        }
+        if (activeParticles > 0) requestAnimationFrame(() => this.animateConfetti());
+        else { this.particles = []; this.animating = false; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
     }
 }
 
-// Initialize app when DOM is ready
 let app;
-document.addEventListener('DOMContentLoaded', () => {
-    app = new MathApp();
-});
+document.addEventListener('DOMContentLoaded', () => { app = new MathApp(); });

@@ -12,6 +12,11 @@ A delightful, premium, single-page web application designed specifically for an 
 
 ## ✨ Key Features
 
+### 🐾 Gamified Pet Feeding Arena
+- **Choose Your Magical Pet**: Select from 5 adorable companions: 🦄 Sparkles the Unicorn, 🐱 Whiskers the Kitten, 🐶 Barnaby the Puppy, 🐰 Clover the Bunny, or 🐼 Pip the Panda.
+- **Flying Food Animation**: Every correct answer feeds the pet! Watch their favorite treats (🧁, 🐟, 🥩, 🥕, 🍪) fly directly from the math problem to the pet's mouth.
+- **Emotional Pet Reactions**: When fed, pets bounce happily and show floating heart bubbles (💖). When an incorrect attempt is made, they look sad (💧) and encourage her to try again.
+
 ### 📅 Tailored Daily Challenges
 - **10 Questions Daily**: Each day generates a fresh set of 10 unique 2-digit by 2-digit multiplication problems (10–99).
 - **Progressive Difficulty Ramp**: Questions begin with smaller numbers (e.g., 10–15), move to multiples of 10, and end with a couple of challenge questions to keep practice fun and never overwhelming.
@@ -60,7 +65,7 @@ Since the application is entirely self-contained, running it locally is incredib
 
 ## 📁 Repository Structure
 
-- [`index.html`](index.html): Main HTML layout, tab navigation, and canvas setup.
-- [`style.css`](style.css): Glassmorphism design system, CSS animations, and responsive styles.
-- [`app.js`](app.js): Vanilla JS state management, daily question generation, audio synthesis, and confetti engine.
+- [`index.html`](index.html): Main HTML layout, tab navigation, pet arena, and modal setup.
+- [`style.css`](style.css): Glassmorphism design system, pet animation styles, and responsive layouts.
+- [`app.js`](app.js): Vanilla JS state management, daily question generation, pet feeding logic, audio synthesis, and confetti engine.
 - [`implementation.md`](implementation.md): Detailed architectural plan and feature breakdown.

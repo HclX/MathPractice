@@ -51,6 +51,19 @@
                     </div>
                 </div>
 
+                <!-- Pet Display & Feeding Arena -->
+                <div class="pet-arena">
+                    <div class="pet-header">
+                        <span class="pet-title" id="pet-name-display">🦄 Sparkles the Unicorn</span>
+                        <button class="change-pet-btn" onclick="app.openPetSelector()">🐾 Choose Pet</button>
+                    </div>
+                    <div class="pet-avatar-container">
+                        <div id="pet-avatar" class="pet-avatar">🦄</div>
+                        <div id="pet-mood-bubble" class="pet-mood-bubble">✨</div>
+                    </div>
+                    <p class="pet-instruction" id="pet-instruction">Answer correctly to feed Sparkles a 🧁!</p>
+                </div>
+
                 <!-- Question Container -->
                 <div id="question-area" class="question-card">
                     <div class="question-header">
@@ -84,7 +97,7 @@
                 <div id="day-complete-area" class="completion-card hidden">
                     <h2>🎉 Hooray! Challenge Completed! 🎉</h2>
                     <div class="trophy-display">👑</div>
-                    <p class="completion-message">You did a brilliant job practicing your multiplication today!</p>
+                    <p class="completion-message">You did a brilliant job practicing your multiplication and feeding your pet today!</p>
                     <div class="completion-stats">
                         <div class="stat-box">
                             <span class="stat-label">Success Rate</span>
@@ -149,6 +162,42 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Pet Selector Modal -->
+    <div id="pet-selector-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>🐾 Choose Your Magical Pet 🐾</h2>
+            <p>Who would you like to feed and play with today?</p>
+            <div class="pet-options">
+                <button class="pet-option-btn" onclick="app.selectPet('unicorn')">
+                    <span class="pet-opt-icon">🦄</span>
+                    <span class="pet-opt-name">Sparkles the Unicorn</span>
+                    <span class="pet-opt-food">Loves 🧁</span>
+                </button>
+                <button class="pet-option-btn" onclick="app.selectPet('kitten')">
+                    <span class="pet-opt-icon">🐱</span>
+                    <span class="pet-opt-name">Whiskers the Kitten</span>
+                    <span class="pet-opt-food">Loves 🐟</span>
+                </button>
+                <button class="pet-option-btn" onclick="app.selectPet('puppy')">
+                    <span class="pet-opt-icon">🐶</span>
+                    <span class="pet-opt-name">Barnaby the Puppy</span>
+                    <span class="pet-opt-food">Loves 🥩</span>
+                </button>
+                <button class="pet-option-btn" onclick="app.selectPet('bunny')">
+                    <span class="pet-opt-icon">🐰</span>
+                    <span class="pet-opt-name">Clover the Bunny</span>
+                    <span class="pet-opt-food">Loves 🥕</span>
+                </button>
+                <button class="pet-option-btn" onclick="app.selectPet('panda')">
+                    <span class="pet-opt-icon">🐼</span>
+                    <span class="pet-opt-name">Pip the Panda</span>
+                    <span class="pet-opt-food">Loves 🍪</span>
+                </button>
+            </div>
+            <button class="action-btn secondary-btn close-modal-btn" onclick="app.closePetSelector()">Close</button>
+        </div>
     </div>
 
     <script src="app.js"></script>

@@ -11,11 +11,16 @@ A standalone, single-page web application designed for an 8-year-old girl to pra
 
 ## Core Features
 
-### 1. Daily Challenge Management
+### 1. Gamified Pet Feeding Arena
+- **Interactive Pet Companions**: Allows user to adopt and feed 5 different magical pets (Unicorn 🦄, Kitten 🐱, Puppy 🐶, Bunny 🐰, Panda 🐼).
+- **Flying Food Animation**: Correct answers dynamically spawn the pet's favorite food (🧁, 🐟, 🥩, 🥕, 🍪) and animate it flying into the pet's mouth.
+- **Emotional Expressions**: Pets react dynamically with happy bouncing animations (💖) when fed, or sad shaking expressions (💧) on incorrect attempts.
+
+### 2. Daily Challenge Management
 - **Question Set**: 10 questions per day. Each question is a multiplication of two 2-digit numbers (10-99). To avoid overwhelming an 8-year-old, we can include a mix of easier 2-digit numbers (e.g. multiples of 10, teens, 20s) and some trickier ones.
 - **Persistence**: State is saved in `localStorage` keyed by the current date (`YYYY-MM-DD`). If the user closes and reopens the browser, progress on today's challenge is fully preserved.
 
-### 2. Interactive Practice View
+### 3. Interactive Practice View
 - **Card-Based Layout**: One question displayed at a time in a beautiful, prominent card.
 - **Input**: Large, easy-to-type number input field with clear focus styles.
 - **Validation**:
@@ -24,7 +29,7 @@ A standalone, single-page web application designed for an 8-year-old girl to pra
   - Incorrect: Displays a gentle, supportive message ("Oops! Give it another try, you can do it!").
 - **Progress Bar**: A visual progress bar showing completion (e.g., 3/10 completed).
 
-### 3. Summary & History View (Trophy Room)
+### 4. Summary & History View (Trophy Room)
 - **Daily Success Rate**: Calculates the percentage of questions answered correctly on the first attempt (or overall completion).
 - **History Table / Grid**: Displays past days' records with cute visual badges:
   - 🥇 Gold Trophy (100%)
@@ -33,12 +38,12 @@ A standalone, single-page web application designed for an 8-year-old girl to pra
 - **Statistics**: Total days practiced, total stars earned.
 
 ## Architecture & Files
-- `index.html`: Main structure, templates for views, Google Fonts CDN links, Canvas for confetti.
-- `style.css`: Vanilla CSS with CSS variables for color palette, flexbox/grid layouts, and CSS animations (bounce, pulse, shimmer).
-- `app.js`: Module/script handling state management, DOM manipulation, `localStorage` saving/loading, and confetti generation.
+- `index.html`: Main structure, templates for views, Google Fonts CDN links, Canvas for confetti, Pet Arena & Selector Modal.
+- `style.css`: Vanilla CSS with CSS variables for color palette, flexbox/grid layouts, flying food transitions, and CSS animations (bounce, pulse, shimmer).
+- `app.js`: Module/script handling state management, DOM manipulation, `localStorage` saving/loading, pet feeding animations, and confetti generation.
 
 ## Implementation Steps
 1. Create `index.html` with semantic structure and view containers.
 2. Create `style.css` with vibrant, premium styling, responsive design, and animations.
-3. Create `app.js` with robust logic for daily seed/generation, UI state transitions, and confetti effects.
-4. Test all user flows (answering correctly/incorrectly, completing a day, viewing history, switching days).
+3. Create `app.js` with robust logic for daily seed/generation, UI state transitions, pet feeding, and confetti effects.
+4. Test all user flows (answering correctly/incorrectly, completing a day, viewing history, switching days, changing pets).
