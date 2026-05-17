@@ -558,6 +558,58 @@ body {
     text-align: center;
 }
 
+/* Trophy Shelf */
+.pet-trophy-shelf {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.75);
+    border: 2px dashed #d8b4fe;
+    border-radius: var(--border-radius-md);
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.shelf-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #6b21a8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.shelf-trophies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    min-height: 35px;
+    max-height: 90px;
+    overflow-y: auto;
+    width: 100%;
+    padding: 2px 5px;
+}
+
+.shelf-trophy {
+    font-size: 1.7rem;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+    animation: trophy-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.shelf-trophy:hover {
+    transform: scale(1.25) translateY(-2px);
+}
+
+@keyframes trophy-pop {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
 /* Pet Animation States */
 .pet-happy {
     animation: pet-bounce 0.4s ease infinite alternate;

@@ -170,6 +170,36 @@ class MathApp {
         
         document.getElementById('pet-mood-bubble').textContent = pet.happy;
         document.getElementById('pet-instruction').textContent = `Answer correctly to feed ${pet.actionName} a ${pet.food}!`;
+
+        // Populate Trophy Shelf
+        const shelfTitleEl = document.getElementById('shelf-title-display');
+        if (shelfTitleEl) {
+            shelfTitleEl.textContent = `🏆 ${pet.actionName}'s Trophy Shelf 🏆`;
+        }
+        const shelfTrophiesEl = document.getElementById('shelf-trophies-display');
+        if (shelfTrophiesEl) {
+            shelfTrophiesEl.innerHTML = '';
+            let history = [];
+            const savedHistory = localStorage.getItem(this.HISTORY_KEY);
+            if (savedHistory) {
+                try { history = JSON.parse(savedHistory); } catch (e) { console.error(e); }
+            }
+            if (history.length === 0) {
+                shelfTrophiesEl.innerHTML = `<span style="font-size: 0.9rem; color: var(--color-text-muted);">No trophies yet. Finish today's challenge to earn one!</span>`;
+            } else {
+                history.forEach((item, idx) => {
+                    let trophyIcon = "🎖️";
+                    if (item.successRate === 100) trophyIcon = "🏆";
+                    else if (item.successRate >= 80) trophyIcon = "🌟";
+                    
+                    const span = document.createElement('span');
+                    span.className = 'shelf-trophy';
+                    span.textContent = trophyIcon;
+                    span.title = `${this.formatDate(item.date)}: ${item.successRate}% Success (${item.stars} ⭐)`;
+                    shelfTrophiesEl.appendChild(span);
+                });
+            }
+        }
     }
 
     /**
