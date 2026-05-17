@@ -18,7 +18,12 @@ class MathApp {
             panda: { name: "Pip the Panda", avatar: "🐼", food: "🍪", happy: "💖", sad: "🥺", chew: "😋", actionName: "Pip" }
         };
 
-        this.selectedPet = localStorage.getItem(this.PET_STORAGE_KEY) || 'unicorn';
+        let savedPet = localStorage.getItem(this.PET_STORAGE_KEY);
+        if (!savedPet || !this.PETS[savedPet]) {
+            savedPet = 'unicorn';
+        }
+        this.selectedPet = savedPet;
+
         this.todayStr = this.getTodayDateString();
         this.state = this.loadTodayState();
         
@@ -47,7 +52,10 @@ class MathApp {
         const saved = localStorage.getItem(key);
         if (saved) {
             try {
-                return JSON.parse(saved);
+                const parsed = JSON.parse(saved);
+                if (parsed && Array.isArray(parsed.questions) && parsed.questions.length === this.TOTAL_QUESTIONS) {
+                    return parsed;
+                }
             } catch (e) {
                 console.error("Error parsing saved state", e);
             }
@@ -198,18 +206,30 @@ class MathApp {
         document.getElementById('practice-progress').style.width = `${progressPct}%`;
         document.getElementById('practice-progress-text').textContent = `${this.state.currentIndex} / ${this.TOTAL_QUESTIONS}`;
         
-        const questionArea = document.getElementById('question-area');
+        // Update Sidebar Stats
+        document.getElementById('sidebar-stars').textContent = `${this.state.stars} ⭐`;
+        
+        let firstAttemptCorrect = 0;
+        this.state.questions.slice(0, this.state.currentIndex).forEach(q => {
+            if (q.correct && q.attempts === 1) {
+                firstAttemptCorrect++;
+            }
+        });
+        const currentSuccess = this.state.currentIndex > 0 ? Math.round((firstAttemptCorrect / this.state.currentIndex) * 100) : 100;
+        document.getElementById('sidebar-success').textContent = `${currentSuccess}%`;
+
+        const practiceGridArea = document.getElementById('practice-grid-area');
         const dayCompleteArea = document.getElementById('day-complete-area');
 
         if (this.state.completed) {
-            questionArea.classList.add('hidden');
+            practiceGridArea.classList.add('hidden');
             dayCompleteArea.classList.remove('hidden');
             document.getElementById('today-success-rate').textContent = `${this.state.successRate}%`;
             document.getElementById('today-stars-earned').textContent = `${this.state.stars} ⭐`;
             return;
         }
 
-        questionArea.classList.remove('hidden');
+        practiceGridArea.classList.remove('hidden');
         dayCompleteArea.classList.add('hidden');
 
         const q = this.state.questions[this.state.currentIndex];
@@ -272,6 +292,9 @@ class MathApp {
             this.showFeedback(randomPraise, "success");
 
             this.saveState();
+            
+            // Update sidebar stats immediately
+            document.getElementById('sidebar-stars').textContent = `${this.state.stars} ⭐`;
         } else {
             // Incorrect Answer
             this.playChime(false);

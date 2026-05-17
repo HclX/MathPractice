@@ -41,59 +41,77 @@
         <main class="app-content">
             <!-- PRACTICE VIEW -->
             <section id="view-practice" class="view-section active">
-                <div class="daily-status-header">
-                    <div class="date-badge" id="current-date-display">📅 Today</div>
-                    <div class="progress-wrapper">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="practice-progress"></div>
+                <div class="practice-grid" id="practice-grid-area">
+                    <!-- Left Column: Math Problem Card -->
+                    <div class="practice-main-col">
+                        <div id="question-area" class="question-card">
+                            <div class="question-header">
+                                <span class="question-number" id="question-number-badge">Question 1 of 10</span>
+                                <span class="stars-earned" id="stars-earned-display">⭐ 0</span>
+                            </div>
+
+                            <div class="math-problem">
+                                <span id="num1" class="math-number">00</span>
+                                <span class="math-operator">×</span>
+                                <span id="num2" class="math-number">00</span>
+                                <span class="math-equals">=</span>
+                                <input type="number" id="answer-input" class="answer-input" placeholder="?" inputmode="numeric" autofocus>
+                            </div>
+
+                            <div class="feedback-area" id="feedback-message">
+                                <!-- Feedback text appears here -->
+                            </div>
+
+                            <div class="action-buttons">
+                                <button id="check-btn" class="action-btn primary-btn" onclick="app.checkAnswer()">
+                                    ✨ Check Answer ✨
+                                </button>
+                                <button id="next-btn" class="action-btn secondary-btn hidden" onclick="app.nextQuestion()">
+                                    Next Question ➡️
+                                </button>
+                            </div>
                         </div>
-                        <span class="progress-text" id="practice-progress-text">0 / 10</span>
+                    </div>
+
+                    <!-- Right Column: Pet Arena & Daily Progress Dashboard -->
+                    <div class="practice-sidebar-col">
+                        <!-- Pet Display & Feeding Arena -->
+                        <div class="pet-arena">
+                            <div class="pet-header">
+                                <span class="pet-title" id="pet-name-display">🦄 Sparkles the Unicorn</span>
+                                <button class="change-pet-btn" onclick="app.openPetSelector()">🐾 Choose Pet</button>
+                            </div>
+                            <div class="pet-avatar-container">
+                                <div id="pet-avatar" class="pet-avatar">🦄</div>
+                                <div id="pet-mood-bubble" class="pet-mood-bubble">✨</div>
+                            </div>
+                            <p class="pet-instruction" id="pet-instruction">Answer correctly to feed Sparkles a 🧁!</p>
+                        </div>
+
+                        <!-- Progress & Stats Card -->
+                        <div class="sidebar-card status-card">
+                            <div class="status-header-row">
+                                <div class="date-badge" id="current-date-display">📅 Today</div>
+                                <span class="progress-text" id="practice-progress-text">0 / 10 Done</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="practice-progress"></div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-mini">
+                                    <span class="stat-mini-label">Stars Earned</span>
+                                    <span class="stat-mini-value" id="sidebar-stars">0 ⭐</span>
+                                </div>
+                                <div class="stat-mini">
+                                    <span class="stat-mini-label">Success Rate</span>
+                                    <span class="stat-mini-value" id="sidebar-success">100%</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Pet Display & Feeding Arena -->
-                <div class="pet-arena">
-                    <div class="pet-header">
-                        <span class="pet-title" id="pet-name-display">🦄 Sparkles the Unicorn</span>
-                        <button class="change-pet-btn" onclick="app.openPetSelector()">🐾 Choose Pet</button>
-                    </div>
-                    <div class="pet-avatar-container">
-                        <div id="pet-avatar" class="pet-avatar">🦄</div>
-                        <div id="pet-mood-bubble" class="pet-mood-bubble">✨</div>
-                    </div>
-                    <p class="pet-instruction" id="pet-instruction">Answer correctly to feed Sparkles a 🧁!</p>
-                </div>
-
-                <!-- Question Container -->
-                <div id="question-area" class="question-card">
-                    <div class="question-header">
-                        <span class="question-number" id="question-number-badge">Question 1</span>
-                        <span class="stars-earned" id="stars-earned-display">⭐ 0</span>
-                    </div>
-
-                    <div class="math-problem">
-                        <span id="num1" class="math-number">00</span>
-                        <span class="math-operator">×</span>
-                        <span id="num2" class="math-number">00</span>
-                        <span class="math-equals">=</span>
-                        <input type="number" id="answer-input" class="answer-input" placeholder="?" inputmode="numeric" autofocus>
-                    </div>
-
-                    <div class="feedback-area" id="feedback-message">
-                        <!-- Feedback text appears here -->
-                    </div>
-
-                    <div class="action-buttons">
-                        <button id="check-btn" class="action-btn primary-btn" onclick="app.checkAnswer()">
-                            ✨ Check Answer ✨
-                        </button>
-                        <button id="next-btn" class="action-btn secondary-btn hidden" onclick="app.nextQuestion()">
-                            Next Question ➡️
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Day Complete Container -->
+                <!-- Day Complete Container (Full Width) -->
                 <div id="day-complete-area" class="completion-card hidden">
                     <h2>🎉 Hooray! Challenge Completed! 🎉</h2>
                     <div class="trophy-display">👑</div>
