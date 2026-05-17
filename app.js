@@ -483,7 +483,7 @@ class MathApp {
     }
 
     /**
-     * Render Trophy Room summary
+     * Render Pet Room summary
      */
     renderSummary() {
         let history = [];
@@ -501,6 +501,42 @@ class MathApp {
         document.getElementById('total-days-practiced').textContent = totalDays;
         document.getElementById('total-stars-collected').textContent = totalStars;
         document.getElementById('average-success-rate').textContent = `${avgSuccess}%`;
+
+        // Populate Pet Room Living Area
+        const pet = this.PETS[this.selectedPet];
+        const roomPetNameEl = document.getElementById('room-pet-name');
+        if (roomPetNameEl) roomPetNameEl.textContent = pet.name;
+        
+        const roomPetAvatarEl = document.getElementById('room-pet-avatar');
+        if (roomPetAvatarEl) roomPetAvatarEl.textContent = pet.avatar;
+
+        const roomPetStatusEl = document.getElementById('room-pet-status');
+        if (roomPetStatusEl) roomPetStatusEl.textContent = `${pet.actionName} is resting happily in her magical room! ✨`;
+
+        // Populate Grand Trophy Shelf
+        const grandShelfEl = document.getElementById('grand-trophy-shelf-display');
+        if (grandShelfEl) {
+            grandShelfEl.innerHTML = '';
+            if (history.length === 0) {
+                grandShelfEl.innerHTML = `<div class="empty-shelf-msg">No trophies collected yet. Complete today's challenge to place your first trophy on the shelf! 🏆</div>`;
+            } else {
+                history.forEach(item => {
+                    let trophyIcon = "🎖️";
+                    let tierClass = "bronze-trophy";
+                    if (item.successRate === 100) { trophyIcon = "🏆"; tierClass = "gold-trophy"; }
+                    else if (item.successRate >= 80) { trophyIcon = "🌟"; tierClass = "silver-trophy"; }
+                    
+                    const trophyBox = document.createElement('div');
+                    trophyBox.className = `grand-trophy-box ${tierClass}`;
+                    trophyBox.innerHTML = `
+                        <div class="grand-trophy-icon">${trophyIcon}</div>
+                        <div class="grand-trophy-date">${this.formatDate(item.date)}</div>
+                        <div class="grand-trophy-stars">${item.stars} ⭐</div>
+                    `;
+                    grandShelfEl.appendChild(trophyBox);
+                });
+            }
+        }
 
         const tbody = document.getElementById('history-table-body');
         tbody.innerHTML = '';

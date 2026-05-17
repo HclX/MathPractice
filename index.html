@@ -33,7 +33,7 @@
                     🦄 Today's Challenge
                 </button>
                 <button id="tab-summary" class="tab-btn" onclick="app.switchTab('summary')">
-                    🏆 My Trophy Room
+                    🏡 My Pet Room
                 </button>
             </nav>
         </header>
@@ -134,7 +134,7 @@
                         </div>
                     <div class="completion-buttons">
                         <button class="action-btn primary-btn" onclick="app.switchTab('summary')">
-                            🏆 View Trophy Room
+                            🏡 View Pet Room
                         </button>
                         <button class="action-btn secondary-btn" onclick="app.restartDailyChallenge()">
                             🔄 Restart Challenge
@@ -143,11 +143,11 @@
                 </div>
             </section>
 
-            <!-- SUMMARY / HISTORY VIEW -->
+            <!-- MY PET ROOM / HISTORY VIEW -->
             <section id="view-summary" class="view-section hidden">
                 <div class="summary-header">
-                    <h2>🏆 Your Magical Trophy Room 🏆</h2>
-                    <p>Here is your past practice history and all the amazing badges you have collected!</p>
+                    <h2>🏡 Your Magical Pet Room 🏡</h2>
+                    <p>Welcome to your pet's cozy home! Here is where all your earned trophies and stars are displayed.</p>
                     
                     <div class="lifetime-stats">
                         <div class="stat-card">
@@ -174,7 +174,35 @@
                     </div>
                 </div>
 
+                <!-- Pet Room Widescreen Display -->
+                <div class="pet-room-grid">
+                    <!-- Left Column: Cozy Pet Living Area -->
+                    <div class="pet-living-area">
+                        <div class="living-area-header">
+                            <span class="living-pet-name" id="room-pet-name">🦄 Sparkles the Unicorn</span>
+                            <button class="change-pet-btn" onclick="app.openPetSelector()">🐾 Change Pet</button>
+                        </div>
+                        <div class="living-avatar-box">
+                            <div id="room-pet-avatar" class="room-pet-avatar">🦄</div>
+                            <div class="room-pet-rug"></div>
+                        </div>
+                        <p class="room-pet-status" id="room-pet-status">Sparkles is resting happily in her magical room! ✨</p>
+                    </div>
+
+                    <!-- Right Column: Huge Trophy Display Shelf -->
+                    <div class="trophy-display-area">
+                        <div class="trophy-area-header">
+                            <h3>🏆 Grand Trophy Display Shelf 🏆</h3>
+                            <p>Every completed challenge adds a permanent trophy to your pet's collection!</p>
+                        </div>
+                        <div class="grand-trophy-shelf" id="grand-trophy-shelf-display">
+                            <!-- Trophies populated here -->
+                        </div>
+                    </div>
+                </div>
+
                 <div class="history-container">
+                    <div class="history-table-title">📜 Detailed Adventure Log 📜</div>
                     <table class="history-table">
                         <thead>
                             <tr>
