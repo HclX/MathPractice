@@ -565,7 +565,8 @@ body {
 
 .pet-sad {
     animation: pet-shake 0.5s ease infinite;
-    filter: grayscale(20%) drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    filter: grayscale(65%) brightness(85%) sepia(20%) hue-rotate(180deg) drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+    transform: scale(0.92);
 }
 
 @keyframes pet-bounce {

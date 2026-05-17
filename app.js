@@ -11,11 +11,11 @@ class MathApp {
         this.PET_STORAGE_KEY = 'math_selected_pet';
         
         this.PETS = {
-            unicorn: { name: "Sparkles the Unicorn", avatar: "🦄", food: "🧁", flyingFood: ["🧁"], happy: "✨", sad: "💧", chew: "😋", actionName: "Sparkles" },
-            kitten: { name: "Whiskers the Kitten", avatar: "🐱", food: "🍓 & 🐟", flyingFood: ["🍓", "🐟", "🫐"], happy: "💖", sad: "😿", chew: "👅", actionName: "Whiskers" },
-            puppy: { name: "Barnaby the Puppy", avatar: "🐶", food: "🥩", flyingFood: ["🥩", "🦴"], happy: "💖", sad: "🥺", chew: "🦴", actionName: "Barnaby" },
-            bunny: { name: "Clover the Bunny", avatar: "🐰", food: "🥕", flyingFood: ["🥕"], happy: "💖", sad: "💧", chew: "😋", actionName: "Clover" },
-            panda: { name: "Pip the Panda", avatar: "🐼", food: "🍪", flyingFood: ["🍪", "🎋"], happy: "💖", sad: "🥺", chew: "😋", actionName: "Pip" }
+            unicorn: { name: "Sparkles the Unicorn", avatar: "🦄", sadAvatar: "🦄", food: "🧁", flyingFood: ["🧁"], happy: "✨", sad: "💔", chew: "😋", actionName: "Sparkles" },
+            kitten: { name: "Whiskers the Kitten", avatar: "🐱", sadAvatar: "😿", food: "🍓 & 🐟", flyingFood: ["🍓", "🐟", "🫐"], happy: "💖", sad: "💔", chew: "👅", actionName: "Whiskers" },
+            puppy: { name: "Barnaby the Puppy", avatar: "🐶", sadAvatar: "🐶", food: "🥩", flyingFood: ["🥩", "🦴"], happy: "💖", sad: "💔", chew: "🦴", actionName: "Barnaby" },
+            bunny: { name: "Clover the Bunny", avatar: "🐰", sadAvatar: "🐰", food: "🥕", flyingFood: ["🥕"], happy: "💖", sad: "💔", chew: "😋", actionName: "Clover" },
+            panda: { name: "Pip the Panda", avatar: "🐼", sadAvatar: "🐼", food: "🍪", flyingFood: ["🍪", "🎋"], happy: "💖", sad: "💔", chew: "😋", actionName: "Pip" }
         };
 
         let savedPet = localStorage.getItem(this.PET_STORAGE_KEY);
@@ -315,12 +315,14 @@ class MathApp {
             // Pet gets sad
             const avatarEl = document.getElementById('pet-avatar');
             avatarEl.className = 'pet-avatar pet-sad';
+            avatarEl.textContent = pet.sadAvatar || pet.avatar;
             document.getElementById('pet-mood-bubble').textContent = pet.sad;
             document.getElementById('pet-instruction').textContent = `Oh no, ${pet.actionName} is still hungry! Let's try again!`;
             
             setTimeout(() => {
                 if (avatarEl.classList.contains('pet-sad')) {
                     avatarEl.className = 'pet-avatar';
+                    avatarEl.textContent = pet.avatar;
                     document.getElementById('pet-mood-bubble').textContent = pet.happy;
                     document.getElementById('pet-instruction').textContent = `Answer correctly to feed ${pet.actionName} a ${pet.food}!`;
                 }
