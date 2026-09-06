@@ -28,12 +28,23 @@
     <div class="app-container">
         <header class="app-header">
             <h1>✨ Magical Math Adventure ✨</h1>
+            <div class="nav-tabs stage-tabs">
+                <button id="stage-multiplication" class="stage-btn active" onclick="app.switchStage('multiplication')">
+                    ✖️ Multiplication
+                </button>
+                <button id="stage-division" class="stage-btn" onclick="app.switchStage('division')">
+                    ➗ Division
+                </button>
+            </div>
             <nav class="nav-tabs">
                 <button id="tab-practice" class="tab-btn active" onclick="app.switchTab('practice')">
                     🦄 Today's Challenge
                 </button>
                 <button id="tab-summary" class="tab-btn" onclick="app.switchTab('summary')">
                     🏡 My Pet Room
+                </button>
+                <button id="tab-quiz" class="tab-btn" onclick="app.switchTab('quiz')">
+                    ⚡ Speed Quiz
                 </button>
             </nav>
         </header>
@@ -52,10 +63,12 @@
 
                             <div class="math-problem">
                                 <span id="num1" class="math-number">00</span>
-                                <span class="math-operator">×</span>
+                                <span id="math-operator" class="math-operator">×</span>
                                 <span id="num2" class="math-number">00</span>
                                 <span class="math-equals">=</span>
                                 <input type="number" id="answer-input" class="answer-input" placeholder="?" inputmode="numeric" autofocus>
+                                <span id="remainder-label" class="remainder-label hidden">R</span>
+                                <input type="number" id="remainder-input" class="answer-input remainder-input hidden" placeholder="?" inputmode="numeric">
                             </div>
 
                             <div class="feedback-area" id="feedback-message">
@@ -113,6 +126,10 @@
                                     <span class="stat-mini-label">Success Rate</span>
                                     <span class="stat-mini-value" id="sidebar-success">100%</span>
                                 </div>
+                                <div class="stat-mini stat-mini-full">
+                                    <span class="stat-mini-label">Avg Time / Question</span>
+                                    <span class="stat-mini-value" id="sidebar-avg-time">–</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -132,6 +149,10 @@
                             <span class="stat-label">Stars Earned</span>
                             <span class="stat-value" id="today-stars-earned">10 ⭐</span>
                         </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Avg Time / Question</span>
+                            <span class="stat-value" id="today-avg-time">–</span>
+                        </div>
                     </div>
                     <div class="completion-buttons">
                         <button class="action-btn primary-btn" onclick="app.switchTab('summary')">
@@ -140,6 +161,78 @@
                         <button class="action-btn secondary-btn" onclick="app.restartDailyChallenge()">
                             🔄 Restart Challenge
                         </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPEED QUIZ VIEW -->
+            <section id="view-quiz" class="view-section hidden">
+                <!-- Idle / Start Screen -->
+                <div id="quiz-idle-area" class="completion-card">
+                    <h2>⚡ Speed Quiz ⚡</h2>
+                    <p class="completion-message" id="quiz-idle-instruction">Answer as many questions as you can in 90 seconds!</p>
+                    <div class="stat-box">
+                        <span class="stat-label">Best Score</span>
+                        <span class="stat-value" id="quiz-best-score-display">Not played yet</span>
+                    </div>
+                    <div class="completion-buttons">
+                        <button class="action-btn primary-btn" onclick="app.startQuiz()">🚀 Start Quiz</button>
+                    </div>
+                </div>
+
+                <!-- Active Quiz Screen -->
+                <div id="quiz-active-area" class="question-card hidden">
+                    <div class="question-header">
+                        <span class="question-number" id="quiz-timer-display">⏱️ 90s</span>
+                        <span class="stars-earned" id="quiz-live-score-display">✅ 0 · 📝 0</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="quiz-timer-bar"></div>
+                    </div>
+
+                    <div class="math-problem">
+                        <span id="quiz-num1" class="math-number">00</span>
+                        <span id="quiz-operator" class="math-operator">×</span>
+                        <span id="quiz-num2" class="math-number">00</span>
+                        <span class="math-equals">=</span>
+                        <input type="number" id="quiz-answer-input" class="answer-input" placeholder="?" inputmode="numeric">
+                        <span id="quiz-remainder-label" class="remainder-label hidden">R</span>
+                        <input type="number" id="quiz-remainder-input" class="answer-input remainder-input hidden" placeholder="?" inputmode="numeric">
+                    </div>
+
+                    <div class="feedback-area" id="quiz-feedback-message">
+                        <!-- Feedback text appears here -->
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="quiz-check-btn" class="action-btn primary-btn" onclick="app.checkQuizAnswer()">
+                            ✨ Check Answer ✨
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="quiz-results-area" class="completion-card hidden">
+                    <h2>⚡ Quiz Complete! ⚡</h2>
+                    <div class="trophy-display">⚡</div>
+                    <div class="completion-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Questions Finished</span>
+                            <span class="stat-value" id="quiz-result-attempted">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Correct Answers</span>
+                            <span class="stat-value" id="quiz-result-correct">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Accuracy</span>
+                            <span class="stat-value" id="quiz-result-accuracy">0%</span>
+                        </div>
+                    </div>
+                    <p class="completion-message hidden" id="quiz-new-best-message">🎉 New Best Score! 🎉</p>
+                    <div class="completion-buttons">
+                        <button class="action-btn primary-btn" onclick="app.startQuiz()">🔄 Play Again</button>
+                        <button class="action-btn secondary-btn" onclick="app.switchTab('practice')">🦄 Back to Challenge</button>
                     </div>
                 </div>
             </section>
@@ -172,6 +265,13 @@
                                 <span class="stat-name">Avg Success Rate</span>
                             </div>
                         </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-info">
+                                <span class="stat-num" id="average-time-per-question">–</span>
+                                <span class="stat-name">Avg Time / Question</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -193,7 +293,7 @@
                     <!-- Right Column: Huge Trophy Display Shelf -->
                     <div class="trophy-display-area">
                         <div class="trophy-area-header">
-                            <h3>🏆 Grand Trophy Display Shelf 🏆</h3>
+                            <h3 id="trophy-area-title">🏆 Grand Trophy Display Shelf 🏆</h3>
                             <p>Every completed challenge adds a permanent trophy to your pet's collection!</p>
                         </div>
                         <div class="grand-trophy-shelf" id="grand-trophy-shelf-display">
@@ -203,13 +303,14 @@
                 </div>
 
                 <div class="history-container">
-                    <div class="history-table-title">📜 Detailed Adventure Log 📜</div>
+                    <div class="history-table-title" id="history-table-title">📜 Detailed Adventure Log 📜</div>
                     <table class="history-table">
                         <thead>
                             <tr>
                                 <th>Date</th>
                                 <th>Questions</th>
                                 <th>Success Rate</th>
+                                <th>Avg Time</th>
                                 <th>Trophy / Badge</th>
                             </tr>
                         </thead>

@@ -1,6 +1,6 @@
 # 🌟 Magical Math Practice 🌟
 
-A delightful, premium, single-page web application designed specifically for an 8-year-old girl to practice 2-digit by 2-digit multiplication. Built with love, vibrant aesthetics, and encouraging gamification to make learning math an enchanting daily adventure.
+A delightful, premium, single-page web application designed specifically for an 8-year-old girl to practice math. Built with love, vibrant aesthetics, and encouraging gamification to make learning math an enchanting daily adventure.
 
 ---
 
@@ -12,13 +12,18 @@ A delightful, premium, single-page web application designed specifically for an 
 
 ## ✨ Key Features
 
+### 🔢 Multiple Practice Stages
+- **✖️ Multiplication & ➗ Division**: Switch between stages anytime using the stage switcher at the top of the app.
+- **Independent Progress**: Each stage keeps its own daily challenge, stars, success rate, trophy shelf, and adventure log, so switching stages never loses progress in the other.
+- **Long Division with Remainders**: The Division stage practices long division — a larger dividend split by a smaller (1-2 digit) divisor — and asks for both the answer and the remainder (e.g. `59 ÷ 3 = 19 R 2`).
+
 ### 🐾 Gamified Pet Feeding Arena
 - **Choose Your Magical Pet**: Select from 5 adorable companions: 🦄 Sparkles the Unicorn, 🐱 Whiskers the Kitten, 🐶 Barnaby the Puppy, 🐰 Clover the Bunny, or 🐼 Pip the Panda.
 - **Flying Food Animation**: Every correct answer feeds the pet! Watch their favorite treats (🧁, 🐟, 🥩, 🥕, 🍪) fly directly from the math problem to the pet's mouth.
 - **Emotional Pet Reactions**: When fed, pets bounce happily and show floating heart bubbles (💖). When an incorrect attempt is made, they look sad (💧) and encourage her to try again.
 
 ### 📅 Tailored Daily Challenges
-- **10 Questions Daily**: Each day generates a fresh set of 10 unique 2-digit by 2-digit multiplication problems (10–99).
+- **10 Questions Daily**: Each day generates a fresh set of 10 unique problems for the selected stage — 2-digit by 2-digit multiplication, or long division with remainders.
 - **Progressive Difficulty Ramp**: Questions begin with smaller numbers (e.g., 10–15), move to multiples of 10, and end with a couple of challenge questions to keep practice fun and never overwhelming.
 - **Daily Persistence**: Powered by local storage, progress on today's challenge is saved instantly. If the browser is closed and reopened, practice resumes exactly where she left off.
 
